@@ -40,8 +40,9 @@
 <?import javafx.scene.layout.Pane?>
 <?import javafx.scene.layout.RowConstraints?>
 <?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
 
-<VBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="590.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.morpion.MorpionController">
+<VBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="590.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.morpion.MorpionController">
    <children>
       <GridPane fx:id="gridPane" alignment="CENTER" gridLinesVisible="true" prefHeight="489.0" prefWidth="600.0" VBox.vgrow="ALWAYS">
         <columnConstraints>
@@ -57,15 +58,21 @@
       </GridPane>
       <Pane prefHeight="130.0" prefWidth="600.0" VBox.vgrow="ALWAYS">
          <children>
-            <Button fx:id="restart" layoutX="242.0" layoutY="14.0" mnemonicParsing="false" onAction="#restart" prefHeight="34.0" prefWidth="116.0" text="Restart" />
-            <Label fx:id="message" alignment="CENTER" layoutX="6.0" layoutY="49.0" prefHeight="25.0" prefWidth="584.0" text="Label" textAlignment="CENTER" textOverrun="CENTER_ELLIPSIS">
+            <Button fx:id="restart" layoutX="242.0" layoutY="6.0" mnemonicParsing="false" onAction="#restart" prefHeight="34.0" prefWidth="116.0" style="-fx-background-color: #fab1a0;" text="Restart" textFill="WHITE">
+               <font>
+                  <Font name="System Bold" size="14.0" />
+               </font></Button>
+            <Label fx:id="message" alignment="CENTER" layoutX="6.0" layoutY="46.0" prefHeight="25.0" prefWidth="584.0" textAlignment="CENTER" textOverrun="CENTER_ELLIPSIS">
                <padding>
                   <Insets bottom="1.0" left="1.0" right="1.0" top="1.0" />
                </padding>
+               <font>
+                  <Font size="14.0" />
+               </font>
             </Label>
-            <Label layoutX="14.0" layoutY="77.0" prefHeight="25.0" prefWidth="161.0" text="Label" fx:id="xNumLabel" />
-            <Label fx:id="oNumLabel" layoutX="217.0" layoutY="77.0" prefHeight="25.0" prefWidth="161.0" text="Label" />
-            <Label fx:id="freeCaseLabel" layoutX="425.0" layoutY="77.0" prefHeight="25.0" prefWidth="161.0" text="Label" />
+            <Label alignment="CENTER" layoutX="14.0" layoutY="77.0" prefHeight="25.0" prefWidth="161.0" style="-fx-background-color: #00cec9;" fx:id="xNumLabel" />
+            <Label fx:id="oNumLabel" alignment="CENTER" layoutX="217.0" layoutY="77.0" prefHeight="25.0" prefWidth="161.0" style="-fx-background-color: #ff7675;" />
+            <Label fx:id="freeCaseLabel" alignment="CENTER" layoutX="425.0" layoutY="77.0" prefHeight="25.0" prefWidth="161.0" style="-fx-background-color: #6c5ce7;" />
          </children>
       </Pane>
    </children>
