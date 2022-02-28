@@ -1,10 +1,7 @@
 package com.example.morpion;
 
 import javafx.beans.binding.*;
-import javafx.beans.property.BooleanProperty;
-import javafx.beans.property.ObjectProperty;
-import javafx.beans.property.SimpleBooleanProperty;
-import javafx.beans.property.SimpleObjectProperty;
+import javafx.beans.property.*;
 
 import java.util.Arrays;
 import java.util.stream.Stream;
@@ -19,7 +16,7 @@ public class TicTacToeModel {
     /**
      * Nombre de pièces alignés pour gagner (idem).
      */
-    private final static int WINNING_COUNT = 3;
+    //private final static int WINNING_COUNT = 3;
 
     /**
      * Joueur courant.
@@ -41,6 +38,13 @@ public class TicTacToeModel {
       * Positions gagnantes.
       */
      private final BooleanProperty[][] winningBoard = new BooleanProperty[3][3];
+
+
+     private IntegerProperty freeCases = new SimpleIntegerProperty(9);
+
+     private IntegerProperty firstPlayerCases = new SimpleIntegerProperty(0);
+
+     private IntegerProperty secondPlayerCases = new SimpleIntegerProperty(0);
 
     /**
      * Constructeur privé.
@@ -80,7 +84,46 @@ public class TicTacToeModel {
          //Tours.
          turn.setValue(Owner.FIRST);
          winner.set(Owner.NONE);
+         freeCases.set(9);
+         firstPlayerCases.set(0);
+         secondPlayerCases.set(0);
      }
+
+    public int getFreeCases() {
+        return freeCases.get();
+    }
+
+    public IntegerProperty freeCasesProperty() {
+        return freeCases;
+    }
+
+    public int getFirstPlayerCases() {
+        return firstPlayerCases.get();
+    }
+
+    public IntegerProperty firstPlayerCasesProperty() {
+        return firstPlayerCases;
+    }
+
+    public int getSecondPlayerCases() {
+        return secondPlayerCases.get();
+    }
+
+    public IntegerProperty secondPlayerCasesProperty() {
+        return secondPlayerCases;
+    }
+
+    public void setFreeCases(int freeCases) {
+        this.freeCases.set(freeCases);
+    }
+
+    public void setFirstPlayerCases(int firstPlayerCases) {
+        this.firstPlayerCases.set(firstPlayerCases);
+    }
+
+    public void setSecondPlayerCases(int secondPlayerCases) {
+        this.secondPlayerCases.set(secondPlayerCases);
+    }
 
     public final ObjectProperty<Owner> turnProperty() {
         return turn;
@@ -103,10 +146,11 @@ public class TicTacToeModel {
      * @return résultat du jeu sous forme de texte
      */
      public final StringExpression getEndOfGameMessage() {
-         return Bindings.when(winner.isEqualTo(Owner.NONE)).
+         //Si le jeu se termine et il n'y a pas de vainqueur.
+         return Bindings.when(gameOver().and(winner.isEqualTo(Owner.NONE))).
                  then("Le Jeu est terminé, il n'y a pas de gagnant ! ")
                  .otherwise(
-                         Bindings.when(turn.isEqualTo(Owner.FIRST))
+                         Bindings.when(winner.isEqualTo(Owner.FIRST))
                                  .then("Jeu terminé, Le gagnant est Premier joueur")
                                  .otherwise("Jeu terminé, Le gagnant est Deuxième joueur")
                  );
@@ -155,10 +199,11 @@ public class TicTacToeModel {
 
 
       public NumberExpression getScore(Owner owner) {
-          return Bindings.when(Bindings.not(gameOver())).then((int) Arrays.stream(board)
-                  .flatMap(Stream::of)
-                  .filter(square -> square.isEqualTo(owner).get())
-                  .count()).otherwise(0);
+          return switch (owner) {
+              case NONE -> freeCases;
+              case FIRST -> firstPlayerCases;
+              case SECOND -> secondPlayerCases;
+          };
       }
 
 
@@ -167,7 +212,7 @@ public class TicTacToeModel {
        * (soit un joueur a gagné, soit il n’y a plus de cases à jouer)
        */
       public BooleanBinding gameOver() {
-          return winner.isNotEqualTo(Owner.NONE);
+          return winner.isNotEqualTo(Owner.NONE).or(freeCases.isEqualTo(0));
       }
 
 

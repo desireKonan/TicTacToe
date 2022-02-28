@@ -1,7 +1,6 @@
 package com.example.morpion;
 
 import javafx.beans.binding.Bindings;
-import javafx.beans.binding.StringBinding;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
@@ -40,7 +39,6 @@ public class MorpionController implements Initializable {
     public void initialize(URL url, ResourceBundle resourceBundle) {
         for (int i = 0; i < gridPane.getColumnCount(); i++) {
             for (int j = 0; j < gridPane.getRowCount(); j++) {
-                System.out.println(gridPane.getChildren().toString());
                 gridPane.add(new TicTacToeSquare(i, j), i, j);
             }
         }
@@ -52,21 +50,11 @@ public class MorpionController implements Initializable {
         );
 
 
-        xNumLabel.textProperty().bind(
-                StringBinding
-                        .stringExpression(tictactoe.getScore(Owner.FIRST))
-                        .concat(" case pour X")
-        );
+        xNumLabel.textProperty().bind(tictactoe.getScore(Owner.FIRST).asString().concat(" case pour X"));
 
-        oNumLabel.textProperty().bind(
-                Bindings.createStringBinding(() -> tictactoe.getScore(Owner.SECOND).getValue().toString() + " cases pour O")
-        );
+        oNumLabel.textProperty().bind(tictactoe.getScore(Owner.SECOND).asString().concat(" case pour O"));
 
-        freeCaseLabel.textProperty().bind(
-                Bindings.createStringBinding(() -> tictactoe.getScore(Owner.NONE).getValue().toString() + " cases libres")
-        );
-
-        System.out.println((int) tictactoe.getScore(Owner.FIRST).getValue());
+        freeCaseLabel.textProperty().bind(tictactoe.getScore(Owner.NONE).asString().concat(" cases libres"));
     }
 
 

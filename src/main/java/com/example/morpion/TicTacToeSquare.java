@@ -24,8 +24,13 @@ public class TicTacToeSquare extends TextField {
         super.editableProperty().set(false);
         super.setMaxSize(400, 400);
         this.setAlignment(Pos.CENTER);
-        this.setFont(Font.font(20));
         this.ownerProperty().bind(model.getSquare(row, column));
+        this.winnerProperty.bind(model.getWinningSquare(row, column));
+        this.fontProperty().bind(
+                Bindings.when(model.getWinningSquare(row, column))
+                        .then(Bindings.createObjectBinding(() -> Font.font(50)))
+                        .otherwise(Bindings.createObjectBinding(() -> Font.font(20)))
+        );
         super.setOnMouseClicked((mouseEvent) -> {
             //Si le mouvement est possible et le jeu n'est pas terminé.
             if(model.legalMove(row, column).get() && !model.gameOver().get()) {
@@ -37,16 +42,31 @@ public class TicTacToeSquare extends TextField {
                                                 .then("X")
                                                 .otherwise("O"))
                 );
+
                 model.play(row, column);
+
+                //On modifie le score ici.
+                switch (ownerProperty().get()) {
+                    case FIRST -> {
+                        model.setFreeCases(model.getFreeCases() - 1);
+                        model.setFirstPlayerCases(model.getFirstPlayerCases() + 1);
+                        break;
+                    }
+                    case SECOND -> {
+                        model.setFreeCases(model.getFreeCases() - 1);
+                        model.setSecondPlayerCases(model.getSecondPlayerCases() + 1);
+                        break;
+                    }
+                }
             }
         });
 
 
         super.setOnMouseEntered((mouseEvent) -> {
             if(model.legalMove(row, column).get()) {
-                this.setStyle("-fx-background-color: green;");
+                this.setStyle("-fx-background-color: #27ae60;");
             } else {
-                this.setStyle("-fx-background-color: red;");
+                this.setStyle("-fx-background-color: #e74c3c;");
             }
         });
 
